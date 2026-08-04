@@ -26,136 +26,116 @@
 ### Technical Vetting
 | Check | Status | Notes |
 | :--- | :--- | :--- |
-| Python Compatibility | 🟢 | 100% Python-native stack (`pandas`, `pydantic`, `langchain`, `faiss-cpu` / `chromadb`, `langgraph`). Runs standard open-source workflows. |
-| Data Readiness | 🟢 | Standard NPR 7150.2 is structured, numbered, and publicly available. Requirements benchmark set is generated/curated directly in Python. |
-| Resource Check | 🟢 | Fully compliant with Google Colab free tier. Lightweight text corpora (< 1 GB) avoid memory crashes; rate limits managed via caching and batching. |
+| Python Compatibility | 🟢 | [cite_start]100% Python-native stack (`pandas`, `numpy`, `scikit-learn`, `xgboost` / `lightgbm`)[cite: 31, 42]. Fits standard tabular ML workflows. |
+| Data Readiness | 🟢 | [cite_start]CA-provided synthetic dataset (< 1 GB)[cite: 31, 54, 61]. [cite_start]Includes a data dictionary and intentional real-world data quality issues for student cleaning exercises[cite: 42, 62, 65]. |
+| Resource Check | 🟢 | [cite_start]Executable entirely within the Google Colab free tier[cite: 46]. Lightweight tabular dataset avoids memory crashes. |
 
 ### Internal Scores
-- **Student Fit Score:** 9/10 (Difficulty rating 6/10 — ideal "sweet spot" for undergraduate fellows post-ML Foundations).
-- **Technical Depth Score:** 9/10 (Spans full end-to-end ML lifecycle: baseline RAG, structured JSON outputs, tool-calling agents, precision/recall benchmarking, and error analysis).
+- **Student Fit Score:** 9/10 (Difficulty rating 5.5/10 — ideal "sweet spot" for undergraduate fellows post-ML Foundations).
+- [cite_start]**Technical Depth Score:** 9/10 (Spans full end-to-end ML lifecycle: EDA/data cleaning, regression modeling, imbalanced classification, counterfactual recommendation scoring, and fairness/calibration analysis)[cite: 31, 42].
 - **Overall Recommendation:** APPROVE AS IS
 
 ### Advisor Feedback Draft
-This project is exceptionally well-scoped for Break Through Tech fellows. It offers an ideal pedagogical progression starting from a deterministic Non-Agentic RAG baseline up to a tool-calling LLM agent, while anchoring all work on a day-one ground-truth benchmark set. 
+[cite_start]This is an outstanding corporate challenge proposal from WWEX that perfectly aligns with Break Through Tech's pedagogical goals[cite: 10, 31]. [cite_start]The project offers a structured, multi-track workflow that moves fellows from foundational tabular data cleaning up to gradient boosting, quantile regression, and counterfactual carrier recommendation[cite: 31, 42].
 
 **Key Advisor Guardrails:**
-1. Ensure students enforce strict Pydantic JSON schemas so every compliance verdict explicitly cites standard clause numbers.
-2. Implement request caching and batching to avoid hitting API rate limits during iteration.
-3. Keep multi-agent orchestration (LangGraph) strictly as a December stretch goal after the single-agent pipeline is validated.
+1. [cite_start]Enforce **PR-AUC** and **ROC-AUC** (rather than raw accuracy) for the on-time risk classifier due to the ~73/27 class imbalance[cite: 42].
+2. Require time-based validation splits to prevent future performance data leakage into past transit predictions.
+3. [cite_start]Use the provided reference evaluation script (`evaluate.py`) to maintain consistent metric tracking across all project phases[cite: 42].
 
 ---
 
-# Compliance Copilot: Auditing Software Requirements Against Engineering Standards
+# Delivery Performance & Smart Carrier Selection for Multi-Carrier Shipping
 
-**Company / Org:** Break Through Tech AI Studio (Industry Application: Aerospace, MedTech, FinTech GRC)  
-**Challenge Advisor:** BTT AI Studio Technical Lead  
-**Program:** Break Through Tech AI Studio - Fall 2026  
+[cite_start]**Company / Org:** WWEX [cite: 10]  
+[cite_start]**Challenge Advisor:** Arjun Srinivasan (SVP - AI & Data Science, `arjun.srinivasan@wwex.com`, GitHub: `@arjunsr82`) [cite: 16, 18, 22]  
+[cite_start]**Program:** Break Through Tech AI Studio - Fall 2026 [cite: 1]  
 
 ---
 
-## 🏢 About NASA & Regulated Engineering Standards
-In safety-critical software engineering—such as NASA space missions, medical device development, and financial infrastructure—every single software requirement must undergo a rigorous, clause-by-clause manual audit against strict compliance standards (e.g., NASA NPR 7150.2) before code can be written. 
-
-Currently, this compliance review relies on a small group of senior domain experts, creating a massive operational bottleneck and gatekeeping step. Automating this process transforms weeks of tedious manual review into rapid, structured first-pass reports that any engineer on the team can inspect and verify.
+## 🏢 About WWEX
+[cite_start]WWEX (Worldwide Express) is a leading third-party logistics (3PL) provider that helps businesses manage parcel and LTL (Less-Than-Truckload) freight shipping[cite: 31]. [cite_start]In multi-carrier shipping environments, there is often a significant disconnect between carriers' published delivery promises and their actual, realized transit performance[cite: 31, 32]. [cite_start]By leveraging machine learning on historical shipping performance data, WWEX aims to sharpen delivery estimates for merchants and dynamically route shipments to the optimal carrier based on real-world cost vs. speed trade-offs[cite: 31, 32].
 
 ---
 
 ## 🎯 The Challenge
 
 ### Project Summary
-The team will build an AI-powered **Compliance Copilot** that reads software requirements, retrieves relevant clauses from an engineering compliance standard, evaluates whether each requirement satisfies the standard, and generates a structured audit report. The project follows a clear two-stage architectural evolution:
-1. **Non-Agentic Baseline:** A deterministic Retrieval-Augmented Generation (RAG) pipeline that queries relevant standard clauses and judges requirement compliance.
-2. **Tool-Calling LLM Agent:** A dynamic agent equipped with tools (`retrieve_clause`, `check_requirement`, `log_gap`) that orchestrates the audit workflow and compiles final JSON and Markdown gap reports.
+[cite_start]In this project, you will work with synthetic multi-carrier shipment data covering parcel and LTL freight records[cite: 31]. You will apply regression, classification, and recommendation techniques (including gradient-boosted trees, quantile regression, and counterfactual scoring) to:
+1. [cite_start]**Predict Realized Transit Time (Track A):** Estimate actual delivery transit days and beat naive carrier-promised benchmarks[cite: 31, 42].
+2. [cite_start]**Predict On-Time Risk (Track B):** Classify whether a shipment is at risk of being delayed under imbalanced class conditions (~73/27 split)[cite: 31, 42].
+3. [cite_start]**Smart Carrier Recommendation (Track C):** Recommend the best carrier by evaluating counterfactual cost-versus-speed trade-offs under service-level constraints[cite: 31, 42].
 
 ### Success Criteria
-- **Day-One Ground-Truth Benchmark:** A human-labeled benchmark of requirement/clause pairs with explicit verdicts (`Meets`, `Partial`, `Gap`).
-- **Grounded Verification:** Zero ungrounded or hallucinated verdicts; 100% of generated verdicts must cite the specific standard clause ID.
-- **Quantitative Performance:** High Precision and Recall in identifying seeded non-compliance gaps compared against the ground-truth benchmark.
+- [cite_start]**Transit Time Baseline:** Beat the naive "carrier's promised date" baseline (~0.84 days Mean Absolute Error) by a meaningful margin on held-out test data[cite: 42].
+- [cite_start]**Prediction Accuracy:** Maximize Root Mean Squared Error (RMSE) performance and the proportion of transit predictions within $\pm 1$ day of actual delivery[cite: 42].
+- [cite_start]**On-Time Risk Classification:** Achieve strong PR-AUC and ROC-AUC scores for delay predictions[cite: 42].
+- [cite_start]**Calibration & Fairness:** Demonstrate stable calibration and model fairness across geographic lanes, shipment modes (parcel vs. LTL), and carrier types (regional vs. national)[cite: 31, 42].
+- [cite_start]**Reproducible Harness:** Deliver a standardized scoring pipeline using `evaluate.py` to benchmark model performance[cite: 42].
 
 ### Project Milestones
 | Month | Milestone | Key Activities |
 | :--- | :--- | :--- |
-| **September** | Data Parsing & Day-One Benchmark Setup | Parse NASA NPR 7150.2 into structured clause chunks. Create a labeled ground-truth benchmark (30–50 requirement/clause pairs) with seeded compliance gaps and draft an accompanying Data Card. |
-| **October** | Non-Agentic RAG Baseline & Schema Enforcement | Build an in-memory vector index (FAISS/Chroma). Implement a deterministic RAG retrieval pipeline using Pydantic JSON schemas to force structured citations and verdicts. Evaluate initial precision and recall. |
-| **November** | Tool-Calling Agent & Automated Reporting | Wrap the pipeline into an LLM agent with dedicated tools (`retrieve_clause`, `check_requirement`, `log_gap`). Add API rate-limit caching and batching. Generate full JSON and Markdown gap reports. |
-| **December** | Evaluation, Error Analysis & Stretch Horizons | Conduct quantitative benchmark evaluation comparing Baseline vs. Agent performance. Perform qualitative error analysis. Executing stretch goals (LangGraph multi-agent refactoring or cross-standard generalization). |
+| **September** | Domain Onboarding, Data Cleaning & Baseline Protocol | [cite_start]Onboard to shipping domain concepts[cite: 42]. [cite_start]Conduct EDA to identify and fix deliberate data-quality issues (duplicate rows, unit conversion errors, missing weights, whitespace noise, malformed ZIPs)[cite: 42]. [cite_start]Establish clean train/validation protocol and build a first transit-time regression baseline aiming to beat ~0.84 MAE[cite: 42]. |
+| **October** | Feature Engineering & Dual-Track Modeling | [cite_start]Engineer lane, carrier, weight/dimension, seasonality, weather, and congestion features[cite: 31, 42]. [cite_start]Build transit-time regression models (Track A) and on-time risk classifiers (Track B) evaluated with ROC-AUC and PR-AUC[cite: 42]. [cite_start]Begin systematic error analysis across modes, lanes, and carriers[cite: 42]. |
+| **November** | Counterfactual Recommendation & Model Calibration | [cite_start]Combine transit and cost models to score eligible carriers counterfactually[cite: 31, 42]. [cite_start]Build smart carrier recommendations optimizing cost/speed trade-offs under service constraints[cite: 31, 42]. [cite_start]Run calibration and fairness checks across regional/national carriers and finalize technical documentation[cite: 42]. |
+| **December** | Evaluation, Error Analysis & Final Deliverables | [cite_start]Run final benchmark evaluations using `evaluate.py`[cite: 42]. [cite_start]Perform qualitative error analysis detailing model limitations and readiness for merchant-facing delivery estimates[cite: 42]. [cite_start]Deliver the final code repository and stakeholder presentation deck[cite: 42]. |
 
 ---
 
 ## 📊 Dataset
 
-**Name and Source:** NASA Software Engineering Requirements (NPR 7150.2) + Synthetic Software Requirements Specification Dataset  
-**Format:** Plain Text, JSON, CSV  
-**Size:** < 1 GB (100% Google Colab Free Tier Compliant)  
-**Location:** Public NASA NODIS Library & Student-Generated Evaluation Repository  
+[cite_start]**Name and Source:** WWEX Synthetic Multi-Carrier Shipping Dataset [cite: 31, 54]  
+[cite_start]**Format:** CSV / TSV [cite: 59]  
+[cite_start]**Size:** Less than or equal to 1 GB (100% Google Colab Free Tier Compliant) [cite: 46, 61]  
+[cite_start]**Location:** Provided directly by Challenge Advisor with data dictionary documentation [cite: 54, 62, 63]  
 
 ### Key Details
-- **Compliance Standard (Answer Key):** NASA NPR 7150.2 document containing numbered, structured software engineering requirements.
-- **Requirements to Audit:** Student-created software requirements set, intentionally containing compliant items and seeded non-compliance gaps (e.g., missing security specifications, vague testing criteria).
-- **Data Card:** A documentation artifact explaining dataset curation, gap distribution, and labeling criteria.
+- [cite_start]**Features Included:** Lane IDs, carrier codes, service levels, package weights and dimensions, seasonality indicators, weather features, and regional congestion metrics[cite: 31].
+- [cite_start]**Targets Included:** Realized transit days (`transit_days`), delay status indicator, and carrier cost in USD (`carrier_cost_usd`)[cite: 31, 42].
+- [cite_start]**Data Cleaning Task:** Intentionally contains real-world tabular noise (duplicate records, unit-error conversions, missing weights, whitespace noise, malformed ZIP codes) designed for student data preparation exercises[cite: 42, 65].
 
 ---
 
 ## 🛠️ Suggested Approach
 
-**ML Problem Type:** Natural Language Processing (NLP), Retrieval-Augmented Generation (RAG), LLM Tool-Calling Agents, Structured Output Enforcement.  
+[cite_start]**ML Problem Type:** Tabular ML, Regression, Imbalanced Classification, Recommendation Systems[cite: 31, 41].  
 **Recommended Libraries:**
 - `python` (Core language)
-- `pandas` (Data manipulation and evaluation reporting)
-- `pydantic` (JSON schema and output type validation)
-- `langchain` / `faiss-cpu` / `chromadb` (Vector store, chunking, and retrieval)
-- `langgraph` (Optional December stretch goal for multi-agent state graph)
+- [cite_start]`pandas`, `numpy` (Data manipulation, cleaning, and feature processing) [cite: 42]
+- `scikit-learn` (Data splitting, metrics, linear/tree baselines, calibration)
+- `xgboost` / `lightgbm` / `catboost` (Gradient-boosted decision trees for tabular performance)
+- `matplotlib` / `seaborn` (EDA, error analysis, and fairness visualizations)
 
 **Evaluation Metrics:**
-- **Precision:** Percentage of flagged compliance gaps that are true gaps.
-- **Recall:** Percentage of actual compliance gaps correctly flagged by the system.
-- **Citation Groundedness:** Proportion of model verdicts that correctly cite valid clause numbers.
+- [cite_start]**Track A (Transit Days):** Mean Absolute Error (MAE in days, target < 0.84 MAE), RMSE, Share of predictions within $\pm 1$ day[cite: 42].
+- [cite_start]**Track B (On-Time Risk):** PR-AUC (Precision-Recall Area Under Curve), ROC-AUC, Brier Calibration Score[cite: 42].
+- [cite_start]**Track C (Recommendation):** Counterfactual cost/speed score under service-level constraints[cite: 31, 42].
 
 ---
 
 ## 📚 Resources to Get Started
 
 **Background Reading:**
-- NASA Procedural Requirements: *NPR 7150.2 Software Engineering Requirements*.
-- Industry overview of AI applications in Governance, Risk, and Compliance (GRC).
+- [cite_start]Supply Chain Logistics Basics: Understanding Parcel vs. LTL Freight Shipping Modes[cite: 31].
+- [cite_start]Evaluation of Imbalanced Classification: Precision-Recall Curves vs. ROC Curves[cite: 42].
 
 **Technical Tutorials:**
-- LangChain Documentation: *Retrieval-Augmented Generation (RAG) & Vector Stores*.
-- LangChain / OpenAI / Gemini Guides: *Tool Calling and Function Output Structuring with Pydantic*.
-- Grounding & Prompt Engineering: *Forcing Citations and Reducing Hallucination in Audit Reports*.
+- Scikit-Learn Documentation: *Quantile Regression & Model Calibration Plots*.
+- XGBoost / LightGBM Tutorials: *Handling Categorical Features and Custom Loss Functions*.
+- [cite_start]Counterfactual Evaluation Concepts in Recommendation Systems[cite: 31, 42].
 
 ---
 
 ## 🤝 How We'll Work Together
 
-**Check-ins:** Weekly technical lab sections and biweekly Challenge Advisor check-ins.  
+**Check-ins:** Weekly technical lab sections and biweekly Challenge Advisor meetings.  
 **Communication:** BTT Project Slack Channel & GitHub Issue Tracker.  
-**Response Time:** Within 24–48 hours for non-urgent technical questions. 
-
+**Response Time:** Within 24–48 hours for non-urgent technical inquiries.  
 **Recommended Environment:**
-- **Development Environment:** Google Colab (Free Tier CPU/T4 GPU).
-- **Code Repository:** GitHub (Public project repository with modular Python scripts).
-- **Deliverables:** Colab Prototype Notebook, Ground-truth Benchmark CSV, Data Card, JSON/Markdown Audit Report, and Reproducibility README.
-
----
-
-## 🤝 How We'll Work Together (v2)
-
-**Official check-ins:** During our biweekly 45-minute AI Studio Lab Section meeting block (2nd and 4th week of every month)
-
- **Other ways to reach out to me with questions:** 
-* [e.g., Your team's channel within Break Through Tech’s Discord space]
-* [e.g., Email; please copy your teammates and AI Studio Coach]
-* [e.g., Request a team check-in on Zoom]
-* [Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.]
-
-> 💡 **Challenge Advisor: Please update the above based on your availability and preference. If you are not able to answer questions or meet with fellows outside of the biweekly Lab Section check-ins, simply write in "N/A (only available during the official check-in times)"**
-
-**Recommended free coding / collaboration tools**
-* […]
-* […]
-
----
+- [cite_start]**Development Environment:** Google Colab (Free Tier CPU / T4 GPU)[cite: 46].
+- [cite_start]**Code Repository:** Public GitHub Repository with modular Python scripts (including `evaluate.py`)[cite: 21, 42].
+- [cite_start]**Deliverables:** Runnable Google Colab Notebook, Cleaned Dataset Pipeline, Model Evaluation Report, and Final Stakeholder Presentation[cite: 42].
 
 ## 🚀 Getting Started
 

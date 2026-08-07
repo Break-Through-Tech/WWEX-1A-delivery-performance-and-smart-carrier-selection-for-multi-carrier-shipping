@@ -49,6 +49,7 @@ This is an outstanding corporate challenge proposal from WWEX that perfectly ali
 
 **Company / Org:** WWEX   
 **Challenge Advisor:** Arjun Srinivasan (SVP - AI & Data Science, `arjun.srinivasan@wwex.com`, GitHub: `@arjunsr82`)  
+**AI Studio Coach:** Ayush Amberkar, ayush.amberkar@breakthroughtech.org 
 **Program:** Break Through Tech AI Studio - Fall 2026  
 
 ---

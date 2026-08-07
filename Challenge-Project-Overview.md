@@ -84,10 +84,10 @@ Primary metric is Mean Absolute Error (in days) on the withheld transit_days, be
 
 ## 📊 Dataset
 
-**Name and Source:** [TBD]
-**Format:** CSV / TSV 
-**Size:** [TBD]
-**Location:** [To be provided directly by Challenge Advisor with data dictionary documentation]
+**Name and Source:** [TBD]   
+**Format:** CSV / TSV   
+**Size:** [TBD]   
+**Location:** [To be provided directly by Challenge Advisor with data dictionary documentation]   
 
 ---
 

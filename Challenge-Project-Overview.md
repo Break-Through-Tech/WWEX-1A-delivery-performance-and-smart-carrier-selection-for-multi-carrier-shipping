@@ -61,81 +61,88 @@ WWEX (Worldwide Express) is a leading third-party logistics (3PL) provider that 
 ## 🎯 The Challenge
 
 ### Project Summary
-In this project, you will work with synthetic multi-carrier shipment data covering parcel and LTL freight records. You will apply regression, classification, and recommendation techniques (including gradient-boosted trees, quantile regression, and counterfactual scoring) to:
-1. [cite_start]**Predict Realized Transit Time (Track A):** Estimate actual delivery transit days and beat naive carrier-promised benchmarks.
-2. [cite_start]**Predict On-Time Risk (Track B):** Classify whether a shipment is at risk of being delayed under imbalanced class conditions (~73/27 split).
-3. [cite_start]**Smart Carrier Recommendation (Track C):** Recommend the best carrier by evaluating counterfactual cost-versus-speed trade-offs under service-level constraints.
+
+In this project, you will use synthetic multi-carrier shipment data (parcel and LTL freight records with lane, carrier, service-level, weight/dimension, seasonality, weather, and congestion features) and regression, classification, and recommendation techniques (gradient-boosted trees, quantile regression, and counterfactual scoring) to predict each shipment's realized delivery transit time and its on-time risk, and recommend the best carrier by cost-versus-speed trade-off. This will help our company address the gap between carriers' published delivery promises and their actual performance — sharpening merchant-facing delivery estimates and improving carrier selection.
 
 ### Success Criteria
-- **Transit Time Baseline:** Beat the naive "carrier's promised date" baseline (~0.84 days Mean Absolute Error) by a meaningful margin on held-out test data.
-- **Prediction Accuracy:** Maximize Root Mean Squared Error (RMSE) performance and the proportion of transit predictions within $\pm 1$ day of actual delivery.
-- **On-Time Risk Classification:** Achieve strong PR-AUC and ROC-AUC scores for delay predictions.
-- **Calibration & Fairness:** Demonstrate stable calibration and model fairness across geographic lanes, shipment modes (parcel vs. LTL), and carrier types (regional vs. national).
-- **Reproducible Harness:** Deliver a standardized scoring pipeline using `evaluate.py` to benchmark model performance.
+Primary metric is Mean Absolute Error (in days) on the withheld transit_days, beating the naive promised-date baseline (~0.84 MAE) by a meaningful margin and holding up across modes and lanes. Secondary: RMSE and share of predictions within ±1 day. For on-time risk, ROC-AUC and PR-AUC (not accuracy alone, since classes are ~73/27). A successful December outcome is a reproducible model that clears the baseline, an honest error analysis showing where it's weakest, and a stakeholder-ready read on whether it could be trusted inside a merchant-facing delivery estimate. A reference scoring script (evaluate.py) is provided so results are measured consistently.
+
+### Stretch Goals
+(1) Smart carrier recommendation - combine the transit and cost models to score every eligible carrier counterfactually and recommend the best cost/speed trade-off under a service constraint.   
+(2) Quantile / delivery-window prediction (e.g., P50–P90) instead of a single point estimate, for calibrated customer promises.    
+(3) A standalone cost/rate-prediction model (carrier_cost_usd is included).    
+(4) Calibration and fairness analysis across lanes, modes, and regional-vs-national carriers.   
 
 ### Project Milestones
 | Month | Milestone | Key Activities |
-| :--- | :--- | :--- |
-| **September** | Domain Onboarding, Data Cleaning & Baseline Protocol | Onboard to shipping domain concepts. Conduct EDA to identify and fix deliberate data-quality issues (duplicate rows, unit conversion errors, missing weights, whitespace noise, malformed ZIPs). Establish clean train/validation protocol and build a first transit-time regression baseline aiming to beat ~0.84 MAE. |
-| **October** | Feature Engineering & Dual-Track Modeling | Engineer lane, carrier, weight/dimension, seasonality, weather, and congestion features. Build transit-time regression models (Track A) and on-time risk classifiers (Track B) evaluated with ROC-AUC and PR-AUC. Begin systematic error analysis across modes, lanes, and carriers. |
-| **November** | Counterfactual Recommendation & Model Calibration | Combine transit and cost models to score eligible carriers counterfactually. Build smart carrier recommendations optimizing cost/speed trade-offs under service constraints. Run calibration and fairness checks across regional/national carriers and finalize technical documentation. |
-| **December** | Evaluation, Error Analysis & Final Deliverables | Run final benchmark evaluations using `evaluate.py`. Perform qualitative error analysis detailing model limitations and readiness for merchant-facing delivery estimates. Deliver the final code repository and stakeholder presentation deck. |
+|---|---|---|
+| September | Domain Onboarding, EDA & Baseline | Onboard to the shipping domain and dataset; complete EDA; find and fix the deliberate data-quality issues (duplicate rows, missing and unit-error weights, categorical/whitespace noise, malformed ZIPs); establish a clean train/validation protocol and a first transit-time baseline that beats the naive "predict the carrier's promised date" bar (MAE ≈ 0.84 days). |
+| October | Feature Engineering & Model Comparison | Feature engineering and model comparison for transit prediction (Track A); build the on-time-risk classifier (Track B), evaluated with ROC-AUC / PR-AUC given the ~73/27 class balance; begin error analysis by shipment mode, lane, and carrier. |
+| November | Stretch Goals, Validation & Delivery | Take on a stretch goal: carrier recommendation via counterfactual cost/speed scoring and/or quantile "delivery-window" prediction; run calibration and fairness checks; finalize the technical report and stakeholder presentation. |
 
 ---
 
 ## 📊 Dataset
 
-**Name and Source:** WWEX Synthetic Multi-Carrier Shipping Dataset  
+**Name and Source:** [TBD]
 **Format:** CSV / TSV 
-**Size:** Less than or equal to 1 GB (100% Google Colab Free Tier Compliant)  
-**Location:** Provided directly by Challenge Advisor with data dictionary documentation 
-
-### Key Details
-- **Features Included:** Lane IDs, carrier codes, service levels, package weights and dimensions, seasonality indicators, weather features, and regional congestion metrics.
-- **Targets Included:** Realized transit days (`transit_days`), delay status indicator, and carrier cost in USD (`carrier_cost_usd`).
-- **Data Cleaning Task:** Intentionally contains real-world tabular noise (duplicate records, unit-error conversions, missing weights, whitespace noise, malformed ZIP codes) designed for student data preparation exercises.
+**Size:** [TBD]
+**Location:** [To be provided directly by Challenge Advisor with data dictionary documentation]
 
 ---
 
 ## 🛠️ Suggested Approach
 
-**ML Problem Type:** Tabular ML, Regression, Imbalanced Classification, Recommendation Systems.  
+**ML Problem Type:** Classification,Regression,Recommendation Systems 
+
 **Recommended Libraries:**
-- `python` (Core language)
-- `pandas`, `numpy` (Data manipulation, cleaning, and feature processing) 
-- `scikit-learn` (Data splitting, metrics, linear/tree baselines, calibration)
-- `xgboost` / `lightgbm` / `catboost` (Gradient-boosted decision trees for tabular performance)
-- `matplotlib` / `seaborn` (EDA, error analysis, and fairness visualizations)
+- [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
 
 **Evaluation Metrics:**
-- **Track A (Transit Days):** Mean Absolute Error (MAE in days, target < 0.84 MAE), RMSE, Share of predictions within $\pm 1$ day.
-- **Track B (On-Time Risk):** PR-AUC (Precision-Recall Area Under Curve), ROC-AUC, Brier Calibration Score.
-- **Track C (Recommendation):** Counterfactual cost/speed score under service-level constraints.
+- [e.g., Accuracy, Precision/Recall, RMSE, BLEU score]
 
 ---
 
 ## 📚 Resources to Get Started
 
+The following resources will help your team understand the problem space and potential technical approaches for this project:
+
 **Background Reading:**
-- Supply Chain Logistics Basics: Understanding Parcel vs. LTL Freight Shipping Modes.
-- Evaluation of Imbalanced Classification: Precision-Recall Curves vs. ROC Curves.
+- [e.g., Link to an article or blog post about the problem domain]
+- [e.g., Link to an industry report or case study]
 
 **Technical Tutorials:**
-- Scikit-Learn Documentation: *Quantile Regression & Model Calibration Plots*.
-- XGBoost / LightGBM Tutorials: *Handling Categorical Features and Custom Loss Functions*.
-- Counterfactual Evaluation Concepts in Recommendation Systems.
+- [e.g., Link to a free tutorial on the ML technique(s) involved]
+- [e.g., Link to documentation for a key library or tool]
+
+**Code Examples:**
+- [e.g., Link to a relevant GitHub repo]
+- [e.g., Link to a sample implementation or starter code]
+
+**Other:**
+- [Links to any additional resources — e.g., papers, videos, podcasts, etc.]
+
+*Feel free to explore beyond these, and share anything interesting you find with me!*
 
 ---
 
 ## 🤝 How We'll Work Together
 
-**Check-ins:** Weekly technical lab sections and biweekly Challenge Advisor meetings.  
-**Communication:** BTT Project Slack Channel & GitHub Issue Tracker.  
-**Response Time:** Within 24–48 hours for non-urgent technical inquiries.  
-**Recommended Environment:**
-- **Development Environment:** Google Colab (Free Tier CPU / T4 GPU).
-- **Code Repository:** Public GitHub Repository with modular Python scripts (including `evaluate.py`).
-- **Deliverables:** Runnable Google Colab Notebook, Cleaned Dataset Pipeline, Model Evaluation Report, and Final Stakeholder Presentation.
+**Official check-ins:** During our biweekly 45-minute AI Studio Lab Section meeting block (2nd and 4th week of every month)
+
+ **Other ways to reach out to me with questions:** 
+* [e.g., Your team's channel within Break Through Tech’s Discord space]
+* [e.g., Email; please copy your teammates and AI Studio Coach]
+* [e.g., Request a team check-in on Zoom]
+* [Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.]
+
+> 💡 **Challenge Advisor: Please update the above based on your availability and preference. If you are not able to answer questions or meet with fellows outside of the biweekly Lab Section check-ins, simply write in "N/A (only available during the official check-in times)"**
+
+**Recommended free coding / collaboration tools**
+* […]
+* […]
+
+---
 
 ## 🚀 Getting Started
 

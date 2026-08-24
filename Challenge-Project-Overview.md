@@ -87,7 +87,7 @@ The following resources will help your team understand the problem space and pot
 
 
  **Other ways to reach out to me with questions:**
-Discord, Email (arjun.srinivasan@wwex.com)
+Discord, Email (arjun.srinivasan@wwex.com)     
 Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.
 
 

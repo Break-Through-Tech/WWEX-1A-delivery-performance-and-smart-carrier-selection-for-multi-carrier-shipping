@@ -84,11 +84,12 @@ The following resources will help your team understand the problem space and pot
 
 **Official check-ins:** During our biweekly 45-minute AI Studio Lab Section meeting block (2nd and 4th week of every month)
 
- **Other ways to reach out to me with questions:** 
-* [e.g., Your team's channel within Break Through Tech’s Discord space]
-* [e.g., Email; please copy your teammates and AI Studio Coach]
-* [e.g., Request a team check-in on Zoom]
-* [Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.]
+
+
+ **Other ways to reach out to me with questions:**
+Discord, Email (arjun.srinivasan@wwex.com)
+Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.
+
 
 > 
 

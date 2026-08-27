@@ -38,10 +38,10 @@ Primary metric is Mean Absolute Error (in days) on the withheld transit_days, be
 
 ## 📊 Dataset
 
-**Name and Source:** [TBD]   
+**Name and Source:** ShipStation Global Multi-Carrier Shipment Dataset (synthetic) — generated programmatically via the included src/generate_synthetic_data.py; no real customer, carrier, or operational data. Fully reproducible by seed.
 **Format:** CSV / TSV   
-**Size:** [TBD]   
-**Location:** [To be provided directly by Challenge Advisor with data dictionary documentation]   
+**Size:** ~10.4 MB total (≤ 1 GB) — 40,030 training rows and 10,120 test rows, 31 features across 6 carriers, 6 service levels, and 306 origin→destination lanes; two withheld prediction targets.  
+**Location:** data/data_dictionary.md   
 
 ---
 
@@ -50,10 +50,16 @@ Primary metric is Mean Absolute Error (in days) on the withheld transit_days, be
 **ML Problem Type:** Classification,Regression,Recommendation Systems 
 
 **Recommended Libraries:**
-- [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
-
+- pandas / NumPy — data loading, cleaning, feature engineering
+- scikit-learn — baselines and core models (HistGradientBoostingRegressor, classifiers, pipelines, metrics)
+- XGBoost or LightGBM (optional) — stronger gradient boosting for the transit and cost models
+- matplotlib / seaborn — EDA and error-analysis visualizations
+  
 **Evaluation Metrics:**
-- [e.g., Accuracy, Precision/Recall, RMSE, BLEU score]
+- MAE (mean absolute error, in days) — primary metric for transit-time regression (Track A); beat the naive promised-date baseline of ~0.84
+- RMSE and % within ±1 day — secondary regression metrics
+- ROC-AUC and PR-AUC — on-time classification (Track B), since classes are ~73/27 and accuracy alone misleads
+- Cost/speed trade-off objective — for the carrier-recommendation stretch (e.g., cheapest option meeting a service promise at ≥90% confidence)
 
 ---
 

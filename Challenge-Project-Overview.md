@@ -38,7 +38,7 @@ Primary metric is Mean Absolute Error (in days) on the withheld transit_days, be
 
 ## 📊 Dataset
 
-**Name and Source:** ShipStation Global Multi-Carrier Shipment Dataset (synthetic) — generated programmatically via the included src/generate_synthetic_data.py; no real customer, carrier, or operational data. Fully reproducible by seed.
+**Name and Source:** ShipStation Global Multi-Carrier Shipment Dataset (synthetic) — generated programmatically; no real customer, carrier, or operational data. Fully reproducible by seed.
 
 **Format:** CSV / TSV   
 

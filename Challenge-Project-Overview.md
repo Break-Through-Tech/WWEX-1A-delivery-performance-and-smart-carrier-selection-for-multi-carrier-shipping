@@ -40,7 +40,7 @@ Primary metric is Mean Absolute Error (in days) on the withheld transit_days, be
 
 **Name and Source:** ShipStation Global Multi-Carrier Shipment Dataset (synthetic) — generated programmatically; no real customer, carrier, or operational data. Fully reproducible by seed.
 
-**Format:** CSV / TSV   
+**Format:** CSV / TSV (train.csv, test.csv)   
 
 **Size:** ~10.4 MB total (≤ 1 GB) — 40,030 training rows and 10,120 test rows, 31 features across 6 carriers, 6 service levels, and 306 origin→destination lanes; two withheld prediction targets.  
 

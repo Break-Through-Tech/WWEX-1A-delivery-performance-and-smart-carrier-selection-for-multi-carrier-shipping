@@ -8,7 +8,7 @@
 ---
 
 ## 🏢 About WWEX
-WWEX (Worldwide Express) is a leading third-party logistics (3PL) provider that helps businesses manage parcel and LTL (Less-Than-Truckload) freight shipping[cite: 31]. In multi-carrier shipping environments, there is often a significant disconnect between carriers' published delivery promises and their actual, realized transit performance[cite: 31, 32]. By leveraging machine learning on historical shipping performance data, WWEX aims to sharpen delivery estimates for merchants and dynamically route shipments to the optimal carrier based on real-world cost vs. speed trade-offs[cite: 31, 32].
+WWEX (Worldwide Express) is a leading third-party logistics (3PL) provider that helps businesses manage parcel and LTL (Less-Than-Truckload) freight shipping. In multi-carrier shipping environments, there is often a significant disconnect between carriers' published delivery promises and their actual, realized transit performance. By leveraging machine learning on historical shipping performance data, WWEX aims to sharpen delivery estimates for merchants and dynamically route shipments to the optimal carrier based on real-world cost vs. speed trade-offs.
 
 ---
 

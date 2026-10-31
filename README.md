@@ -1,121 +1,160 @@
-# AI Studio Challenge Project Title
+# Delivery Performance & Smart Carrier Selection for Multi-Carrier Shipping
 
-> 💡 **Note for the team:** This is just a template. Update the above title with your AI Studio Challenge Project name. Remove all guidance notes and example text in this template and populate this README with your own content. You can work on this README throughout AI Studio, and get feedback from your AI Studio Coach and Challenge Advisor before finalizing it.  
+Break Through Tech AI Studio — Fall 2026 · Host company: **WWEX (Worldwide Express)**
 
----
+Predicting realized shipment transit time, and the gap between what carriers
+promise and what they actually deliver.
 
-### 👥 **Team Members**
+## 👥 Team Members
 
-**Example:**
+> Roles below are drawn from current GitHub issue assignments. Teammates,
+> please correct your own row.
 
-| Name             | GitHub Handle | Contribution                                                             |
-|------------------|---------------|--------------------------------------------------------------------------|
-| Taylor Nguyen    | @taylornguyen | Data exploration, visualization, overall project coordination            |
-| Jordan Ramirez   | @jramirez     | Data collection, exploratory data analysis (EDA), dataset documentation  |
-| Amina Hassan     | @aminahassan  | Data preprocessing, feature engineering, data validation                 |
-| Priya Mehta      | @pmehta       | Model selection, hyperparameter tuning, model training and optimization  |
-| Chris Park       | @chrispark    | Model evaluation, performance analysis, results interpretation           |
+| Name | GitHub Handle | Contribution |
+|---|---|---|
+| Tejas Lalwani | [@Tejaslalwani24](https://github.com/Tejaslalwani24) | Train/validation protocol and baseline (#4); feature engineering and model comparison (#7) |
+| Hannah Mathew | [@hmathew](https://github.com/hmathew) | Task definition; error analysis by mode, lane, and carrier (#6) |
+| Evelyn Fang | [@fang-evelyn](https://github.com/fang-evelyn) | September milestones; error analysis by mode, lane, and carrier (#6) |
+| Sargun B | [@SargunB](https://github.com/SargunB) | Feature engineering and model comparison (#7) |
+| Andrew Skoblov | [@andrewskoblov](https://github.com/andrewskoblov) | Train/validation split correctness (#4) |
 
----
+**Challenge Advisor:** Arjun Srinivasan, SVP AI & Data Science, WWEX ([@arjunsr82](https://github.com/arjunsr82))
+**AI Studio Coach:** Ayush Amberkar
 
-## 🎯 **Project Highlights**
+## 🎯 Project Highlights
 
-**Example:**
+- Built a gradient-boosted transit-time model (`HistGradientBoostingRegressor`,
+  absolute-error loss) that predicts realized delivery time in days.
+- **MAE 0.546 days against the naive promised-date baseline of 0.841**, a 35%
+  reduction in average error, with **86.6% of predictions within ±1 day**
+  (RMSE 0.775).
+- Validation uses a forward-in-time split, so the score reflects predicting
+  future shipments rather than interpolating among known ones.
+- Cleaned the dataset's seeded quality problems: duplicate rows, missing and
+  unit-error weights, whitespace and casing noise in carrier and service
+  fields, and malformed ZIP codes.
 
-- Developed a machine learning model using `[model type/technique]` to address `[challenge project task]`.
-- Achieved `[key metric or result]`, demonstrating `[value or impact]` for `[host company]`.
-- Generated actionable insights to inform business decisions at `[host company or stakeholders]`.
-- Implemented `[specific methodology]` to address industry constraints or expectations.
+## 👩🏽‍💻 Setup and Installation
 
----
+```bash
+git clone https://github.com/Break-Through-Tech/WWEX-1A-delivery-performance-and-smart-carrier-selection-for-multi-carrier-shipping.git
+cd WWEX-1A-delivery-performance-and-smart-carrier-selection-for-multi-carrier-shipping
+pip install -r requirements.txt
+```
 
-## 👩🏽‍💻 **Setup and Installation**
+Then open `WWEX_1A.ipynb` and run the cells in order. The data ships with the
+repository in `data/` (`train.csv`, `test.csv`), so no separate download is
+needed. ZIP columns must be read as strings or leading zeros are lost; the
+loading cell does this already.
 
-**Provide step-by-step instructions so someone else can run your code and reproduce your results. Depending on your setup, include:**
+Dependencies: `pandas`, `numpy`, `scikit-learn`, `seaborn`, `matplotlib`.
 
-* How to clone the repository
-* How to install dependencies
-* How to set up the environment
-* How to access the dataset(s)
-* How to run the notebook or scripts
+## 🏗️ Project Overview
 
----
+WWEX is a third-party logistics provider coordinating parcel and LTL
+(less-than-truckload) freight across multiple carriers. In multi-carrier
+shipping there is a persistent gap between a carrier's published delivery
+promise and its realized transit performance. Merchants quote the promise;
+customers experience the reality.
 
-## 🏗️ **Project Overview**
+Our objective is to predict each shipment's actual transit time, and its
+on-time risk, well enough to sharpen merchant-facing delivery estimates and
+to support routing shipments to the carrier offering the best real cost-versus-
+speed trade-off.
 
-**Describe:**
+The success bar is set by the carriers themselves: beat the naive strategy of
+simply repeating the promised date, which carries an MAE of roughly 0.84 days,
+by a meaningful margin that holds up across shipment modes and lanes.
 
-- How this project is connected to the Break Through Tech AI Program
-- Your AI Studio host company and the project objective and scope
-- The real-world significance of the problem and the potential impact of your work
+## 📊 Data Exploration
 
----
+**Dataset:** ShipStation Global Multi-Carrier Shipment Dataset, synthetic and
+fully reproducible by seed. No real customer or carrier data.
 
-## 📊 **Data Exploration**
+**Size:** 40,030 training rows and 10,120 test rows, 31 features, spanning 6
+carriers, 6 service levels, and 306 origin-to-destination lanes. Shipments run
+from 2024-01-01 to 2025-12-30.
 
-**You might consider describing the following (as applicable):**
+**Preprocessing.** The dataset carries deliberate quality defects, each handled
+in the loading cell:
 
-* The dataset(s) used: origin, format, size, type of data
-* Data exploration and preprocessing approaches
-* Insights from your Exploratory Data Analysis (EDA)
-* Challenges and assumptions when working with the dataset(s)
+- Casing and whitespace noise in `carrier` and `service_level`, normalized
+  against a canonical spelling list.
+- Missing and unit-error values in `weight_lbs` and the dimension columns.
+- Malformed ZIPs, preserved as strings so leading zeros survive.
+- Duplicate rows.
 
-**Potential visualizations to include:**
+**EDA findings.** Transit days are right-skewed and concentrated on a small
+number of integer values. Service level separates transit time far more
+cleanly than raw distance does: the `Overnight` and `TwoDay` tiers hold their
+times across lane lengths, while `Ground` and the LTL tiers spread widely.
+Carriers differ in both average transit time and on-time rate, which is what
+makes a cost-versus-speed recommendation meaningful. Shipping month and day of
+week both move average transit time, pointing at seasonality and weekend
+backlog as real signal.
 
-* Plots, charts, heatmaps, feature visualizations, sample dataset images
+## 🧠 Model Development
 
----
+**Validation protocol.** Shipments are sorted by `ship_date` and split
+forward in time, with the earlier ~80% of days for training and the later ~20%
+for validation. The cut is made **on a date boundary rather than a row index**:
+cutting by row position allowed a single calendar day to land on both sides of
+the split, and same-day shipments share weather, carrier backlog, and holiday
+conditions. An assertion in the split cell now fails the notebook if any day
+appears in both sets.
 
-## 🧠 **Model Development**
+Training covers 2024-01-01 to 2025-08-04 (32,020 shipments); validation covers
+2025-08-05 to 2025-12-30 (8,010 shipments).
 
-**You might consider describing the following (as applicable):**
+**Model.** `HistGradientBoostingRegressor` with `loss="absolute_error"`, chosen
+to optimize the metric the project is scored on directly. Categorical columns
+are passed natively via pandas category dtype, with categories fitted on the
+training split only. Columns dropped from the feature set: the target itself,
+`delivered_on_time` (which reveals it), identifiers, and the raw date and ZIP
+columns.
 
-* Model(s) used (e.g., CNN with transfer learning, regression models)
-* Feature selection and Hyperparameter tuning strategies
-* Training setup (e.g., % of data for training/validation, evaluation metric, baseline performance)
+**Baseline.** Predict the carrier's promised date. MAE 0.841 days on
+validation.
 
+## 📈 Results & Key Findings
 
----
+| Metric | Naive baseline | Model |
+|---|---|---|
+| MAE (days) | 0.841 | **0.546** |
+| RMSE | — | 0.775 |
+| Within ±1 day | — | **86.6%** |
 
-## 📈 **Results & Key Findings**
+The model reduces average error by about 35% against the promised-date
+baseline, clearing the project's September bar. Nearly seven shipments in
+eight land within a day of the prediction.
 
-**You might consider describing the following (as applicable):**
+The naive baseline's 0.841 MAE is itself the headline business finding: the
+carriers' own published promises are off by roughly a day on average, which is
+the gap this project exists to close.
 
-* Performance metrics (e.g., Accuracy, F1 score, RMSE)
-* How your model performed
-* Insights from evaluating model fairness
+## 🚀 Next Steps
 
-**Potential visualizations to include:**
+- **On-time risk classifier (Track B).** Predict `delivered_on_time` directly,
+  evaluated with ROC-AUC and PR-AUC rather than accuracy, since the classes are
+  roughly 73/27.
+- **Feature engineering and model comparison (Track A).** Lane-level and
+  carrier-level aggregates, and a comparison against alternative regressors.
+- **Error analysis** by shipment mode, lane, and carrier, to find where the
+  model is weakest rather than reporting a single pooled number.
+- **Stretch:** counterfactual carrier recommendation scoring every eligible
+  carrier on cost versus speed; quantile regression for calibrated P50–P90
+  delivery windows instead of a point estimate.
 
-* Confusion matrix, precision-recall curve, feature importance plot, prediction distribution, outputs from fairness or explainability tools
+**Known limitations.** The model is validated on one forward-in-time split, so
+the estimate carries no variance bound. Performance is reported pooled, so a
+lane or carrier where it fails badly would currently be invisible. The data is
+synthetic, which means real-world distribution shift is untested.
 
----
+## 📝 License
 
-## 🚀 **Next Steps**
+To be selected with the Challenge Advisor's approval.
 
-**You might consider addressing the following (as applicable):**
+## 🙏 Acknowledgements
 
-* What are some of the limitations of your model?
-* What would you do differently with more time/resources?
-* What additional datasets or techniques would you explore?
-
----
-
-## 📝 **License**
-
-Specify how your project can be used by others. Choose an appropriate license and link it here (e.g., MIT, Apache 2.0). Make sure your Challenge Advisor approves of the selected license type. 
-
-**Example:**
-This project is licensed under the MIT License.
-
----
-
-## 📄 **References** (Optional but encouraged)
-
-Cite relevant papers, articles, or resources that supported your project.
-
----
-
-## 🙏 **Acknowledgements** (Optional but encouraged)
-
-Thank your Challenge Advisor, host company representatives, TA, and others who supported your project.
+Thanks to Arjun Srinivasan at WWEX for advising this project, and to Ayush
+Amberkar for coaching, along with the Break Through Tech AI Studio program.

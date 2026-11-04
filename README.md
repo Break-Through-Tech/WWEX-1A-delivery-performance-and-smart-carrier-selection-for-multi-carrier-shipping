@@ -15,7 +15,7 @@ promise and what they actually deliver.
 | Tejas Lalwani | [@Tejaslalwani24](https://github.com/Tejaslalwani24) | Train/validation protocol and baseline (#4); feature engineering and model comparison (#7) |
 | Hannah Mathew | [@hmathew](https://github.com/hmathew) | Task definition; error analysis by mode, lane, and carrier (#6) |
 | Evelyn Fang | [@fang-evelyn](https://github.com/fang-evelyn) | September milestones; error analysis by mode, lane, and carrier (#6) |
-| Sargun B | [@SargunB](https://github.com/SargunB) | Feature engineering and model comparison (#7) |
+| Sargun Bhatia | [@SargunB](https://github.com/SargunB) | Feature engineering and model comparison (#7) |
 | Andrew Skoblov | [@andrewskoblov](https://github.com/andrewskoblov) | Train/validation split correctness (#4) |
 
 **Challenge Advisor:** Arjun Srinivasan, SVP AI & Data Science, WWEX ([@arjunsr82](https://github.com/arjunsr82))

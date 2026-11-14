@@ -7,9 +7,6 @@ promise and what they actually deliver, while improving carrier selection.
 
 ## 👥 Team Members
 
-> Roles below are drawn from current GitHub issue assignments. Teammates,
-> please correct your own row.
-
 | Name | GitHub Handle | Contribution |
 |---|---|---|
 | Tejas Lalwani | [@Tejaslalwani24](https://github.com/Tejaslalwani24) | Train/validation protocol and baseline (#4); feature engineering and model comparison (#7); carrier recommendation; run calibration and fairness checks |

@@ -3,7 +3,7 @@
 Break Through Tech AI Studio — Fall 2026 · Host company: **WWEX (Worldwide Express)**
 
 Predicting realized shipment transit time, and the gap between what carriers
-promise and what they actually deliver.
+promise and what they actually deliver, while improving carrier selection.
 
 ## 👥 Team Members
 

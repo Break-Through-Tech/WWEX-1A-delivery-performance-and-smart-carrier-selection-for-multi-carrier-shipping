@@ -12,11 +12,12 @@ promise and what they actually deliver.
 
 | Name | GitHub Handle | Contribution |
 |---|---|---|
-| Tejas Lalwani | [@Tejaslalwani24](https://github.com/Tejaslalwani24) | Train/validation protocol and baseline (#4); feature engineering and model comparison (#7) |
-| Hannah Mathew | [@hmathew](https://github.com/hmathew) | Task definition; error analysis by mode, lane, and carrier (#6) |
-| Evelyn Fang | [@fang-evelyn](https://github.com/fang-evelyn) | September milestones; error analysis by mode, lane, and carrier (#6) |
-| Sargun Bhatia | [@SargunB](https://github.com/SargunB) | Feature engineering and model comparison (#7) |
-| Andrew Skoblov | [@andrewskoblov](https://github.com/andrewskoblov) | Train/validation split correctness (#4) |
+| Tejas Lalwani | [@Tejaslalwani24](https://github.com/Tejaslalwani24) | Train/validation protocol and baseline (#4); feature engineering and model comparison (#7); carrier recommendation; run calibration and fairness checks |
+| Hannah Mathew | [@hmathew](https://github.com/hmathew) | Address missing values and outliers; error analysis by mode, lane, and carrier (#6); README completion; run calibration and fairness checks |
+| Evelyn Fang | [@fang-evelyn](https://github.com/fang-evelyn) | Address missing values and outliers; error analysis by mode, lane, and carrier (#6); quantile "delivery-window" prediction; run calibration and fairness checks |
+| Sargun Bhatia | [@SargunB](https://github.com/SargunB) | Onboard to the shipping domain; feature engineering and model comparison (#7); run calibration and fairness checks |
+| Andrew Skoblov | [@andrewskoblov](https://github.com/andrewskoblov) | Train/validation protocol and baseline (#4); build the on-time risk classifier; README completion; run calibration and fairness checks |
+| Chiagoziem Onwubuya | [@altairify](https://github.com/altairify) | Onboard to the shipping domain; build the on-time risk classifier; quantile "delivery-window" prediction; run calibration and fairness checks |
 
 **Challenge Advisor:** Arjun Srinivasan, SVP AI & Data Science, WWEX ([@arjunsr82](https://github.com/arjunsr82))
 **AI Studio Coach:** Ayush Amberkar

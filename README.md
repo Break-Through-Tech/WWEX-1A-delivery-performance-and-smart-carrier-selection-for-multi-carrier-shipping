@@ -21,16 +21,13 @@ promise and what they actually deliver, while improving carrier selection.
 
 ## 🎯 Project Highlights
 
-- Built a gradient-boosted transit-time model (`HistGradientBoostingRegressor`,
-  absolute-error loss) that predicts realized delivery time in days.
-- **MAE 0.546 days against the naive promised-date baseline of 0.841**, a 35%
-  reduction in average error, with **86.6% of predictions within ±1 day**
-  (RMSE 0.775).
-- Validation uses a forward-in-time split, so the score reflects predicting
-  future shipments rather than interpolating among known ones.
-- Cleaned the dataset's seeded quality problems: duplicate rows, missing and
-  unit-error weights, whitespace and casing noise in carrier and service
-  fields, and malformed ZIP codes.
+- Built a gradient-boosted transit-time model (XGBRegressor, absolute-error objective) that predicts realized delivery time in days, then extended it into a cost/speed carrier recommendation engine.
+- MAE 0.537 days against the naive promised-days baseline of 0.841, a 36% reduction in average error, with 87.7% of predictions within ±1 day (RMSE 0.758).
+- Validation uses a forward-in-time split, so the score reflects predicting future shipments rather than interpolating among known ones.
+- Compared six model families (Ridge, Random Forest, Extra Trees, HistGradientBoosting, LightGBM, XGBoost) and tested engineered calendar, size, and interaction features. They gave no lift beyond the ~0.002-day noise floor, so the final model uses the original features.
+- Cleaned the dataset’s seeded quality problems: duplicate rows, missing and unit-error weights (grams entered as pounds), whitespace and casing noise in carrier and service fields, and malformed ZIP codes. Imputation medians were computed on train only to prevent leakage.
+- Error analysis by carrier, service level, lane, and month showed Falcon Post is hardest to predict (MAE ~0.65 vs ~0.41 for Summit Express).
+- Built a counterfactual carrier recommender that predicts transit time and cost for each eligible carrier on the same lane and service, scores each with cost + $8 × predicted days, and recommends a switch only when the improvement exceeds $5. Recommendations are model-based estimates, not verified outcomes.
 
 ## 👩🏽‍💻 Setup and Installation
 

@@ -97,15 +97,16 @@ Training covers 2024-01-01 to 2025-08-04 (32,020 shipments); validation covers
 
 **Feature set and leakage controls.** Columns dropped from the feature set: the target itself, delivered_on_time (which reveals it), carrier_cost_usd (billed cost is not known at ship time), identifiers, and the raw date and ZIP columns. Median imputation, scaling, and one-hot encoding are fitted on the training split only, inside a pipeline, so no validation information leaks into preprocessing.
 
-**Model.** Six model families were compared on the same forward-in-time split. The first model built was HistGradientBoostingRegressor (loss="absolute_error"), chosen to optimize the metric the project is scored on directly. XGBoost (reg:absoluteerror) later superseded it as the best performer.
+**Model.** Six model families were compared on the same forward-in-time split. The first model built was HistGradientBoostingRegressor (loss="absolute_error"), chosen to optimize the metric the project is scored on directly. XGBoost later superseded it as the best performer.
 
-Model  Validation MAE (days)
-Promised days (baseline)	0.841
-Ridge	~0.59
-Extra Trees / Random Forest	~0.57
-HistGradientBoosting	0.544
-LightGBM	0.542
-XGBoost	0.537
+| Model |  Validation MAE (days) |
+|---|---|---|
+| Promised days (baseline) |	0.841 |
+| Ridge	| ~0.59 |
+| Extra Trees / Random Forest |	~0.57 |
+| HistGradientBoosting | 0.544 |
+| LightGBM | 0.542 |
+| XGBoost	| 0.537 |
 
 **Feature engineering.** Calendar, log-transform, dimensional-weight, and interaction features were tested against the original feature set. They gave no meaningful lift (XGBoost MAE 0.5366 original vs. 0.5373 engineered), so the final model uses the original features.
 

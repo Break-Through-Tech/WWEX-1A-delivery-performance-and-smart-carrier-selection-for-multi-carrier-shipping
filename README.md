@@ -99,9 +99,9 @@ Training covers 2024-01-01 to 2025-08-04 (32,020 shipments); validation covers
 
 **Model.** Six model families were compared on the same forward-in-time split. The first model built was HistGradientBoostingRegressor (loss="absolute_error"), chosen to optimize the metric the project is scored on directly. XGBoost later superseded it as the best performer.
 
-| Model |  Validation MAE (days) |
-|---|---|---|
-| Promised days (baseline) |	0.841 |
+| Model | Validation MAE (days) |
+|---|---|
+| Promised days (baseline) | 0.841 |
 | Ridge	| ~0.59 |
 | Extra Trees / Random Forest |	~0.57 |
 | HistGradientBoosting | 0.544 |

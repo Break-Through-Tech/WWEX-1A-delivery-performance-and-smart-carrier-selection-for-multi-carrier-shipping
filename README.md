@@ -150,10 +150,6 @@ the estimate carries no variance bound. Performance is reported pooled, so a
 lane or carrier where it fails badly would currently be invisible. The data is
 synthetic, which means real-world distribution shift is untested.
 
-## 📝 License
-
-To be selected with the Challenge Advisor's approval.
-
 ## 🙏 Acknowledgements
 
 Thanks to Arjun Srinivasan at WWEX for advising this project, and to Ayush

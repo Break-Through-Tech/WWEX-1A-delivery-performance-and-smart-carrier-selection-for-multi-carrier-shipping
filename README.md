@@ -31,7 +31,7 @@ cd WWEX-1A-delivery-performance-and-smart-carrier-selection-for-multi-carrier-sh
 pip install -r requirements.txt
 ```
 
-Then open `WWEX_1A.ipynb` and run the cells in order. The data ships with the
+Then open `WWEX_1A_September_milestones.ipynb`, `WWEX_1A_October_milestones.ipynb`, `WWEX_Stretch_Delivery_Window_FINAL (1).ipynb`, and `track_b_on_time_classifier.ipynb` and run the cells in order. The data ships with the
 repository in `data/` (`train.csv`, `test.csv`), so no separate download is
 needed. ZIP columns must be read as strings or leading zeros are lost; the
 loading cell does this already.

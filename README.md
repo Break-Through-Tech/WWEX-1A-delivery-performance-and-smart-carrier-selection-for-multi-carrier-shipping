@@ -84,31 +84,7 @@ backlog as real signal.
 
 ## 🧠 Model Development
 
-**Validation protocol.** Shipments are sorted by ship_date and split forward in time, with the earlier ~80% of days for training and the later ~20% for validation. The cut is made on a date boundary rather than a row index: cutting by row position allowed a single calendar day to land on both sides of the split, and same-day shipments share weather, carrier backlog, and holiday conditions. An assertion in the split cell fails the notebook if any day appears in both sets.
 
-Training covers 2024-01-01 to 2025-08-04 (32,020 shipments); validation covers
-2025-08-05 to 2025-12-30 (8,010 shipments).
-
-**Feature set and leakage controls.** Columns dropped from the feature set: the target itself, delivered_on_time (which reveals it), carrier_cost_usd (billed cost is not known at ship time), identifiers, and the raw date and ZIP columns. Median imputation, scaling, and one-hot encoding are fitted on the training split only, inside a pipeline, so no validation information leaks into preprocessing.
-
-**Model.** Six model families were compared on the same forward-in-time split. The first model built was HistGradientBoostingRegressor (loss="absolute_error"), chosen to optimize the metric the project is scored on directly. XGBoost later superseded it as the best performer.
-
-| Model | Validation MAE (days) |
-|---|---|
-| Promised days (baseline) | 0.841 |
-| Ridge	| ~0.59 |
-| Extra Trees / Random Forest |	~0.57 |
-| HistGradientBoosting | 0.544 |
-| LightGBM | 0.542 |
-| XGBoost	| 0.537 |
-
-**Feature engineering.** Calendar, log-transform, dimensional-weight, and interaction features were tested against the original feature set. They gave no meaningful lift (XGBoost MAE 0.5366 original vs. 0.5373 engineered), so the final model uses the original features.
-
-**Hyperparameter tuning.** Randomized search with time-series cross-validation was run for XGBoost, LightGBM, and HistGradientBoosting. None beat the hand-set XGBoost (tuned XGBoost 0.5374 vs. 0.5366). Differences are within the ~0.002-day noise floor, so further tuning was not pursued.
-
-**Feature importance.** Permutation importance shows promised_days dominates, followed by carrier, distance_miles, weather_severity, ship day of week, and carrier_congestion_index. Package dimensions and handling flags contribute little.
-
-**Error analysis.** Errors were sliced by shipment mode, carrier, service level, lane, and ship month. Falcon Post is the hardest carrier to predict (MAE ~0.65 vs. ~0.41 for Summit Express). This breakdown was run on the HistGradientBoosting model, so exact figures may differ slightly for XGBoost.
 
 ## 📈 Results & Key Findings
 
